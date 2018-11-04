@@ -107,6 +107,7 @@
 #define configUSE_MUTEXES                        1
 #define configQUEUE_REGISTRY_SIZE                8
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION  1
+#define configUSE_QUEUE_SETS										 1
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                    0
