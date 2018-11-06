@@ -69,6 +69,7 @@ volatile uint32_t ulIdleCycleCount = 0UL;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+
 static void MX_GPIO_Init(void);
 void StartDefaultTask(void const * argument);
 void vContinuousProcessingTask(void* pvParameters);
@@ -141,6 +142,8 @@ int main(void)
 	xQueue = xQueueCreate( 3, sizeof( Data_t ) );
 	xQueue1 = xQueueCreate(1, sizeof(char*));
 	xQueue2 = xQueueCreate(1, sizeof(char*));
+	
+	xQueueSet = xQueueCreateSet(1*2);
 
 	xQueueAddToSet(xQueue1, xQueueSet);
 	xQueueAddToSet(xQueue2, xQueueSet);
