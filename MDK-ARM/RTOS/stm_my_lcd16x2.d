@@ -29,4 +29,5 @@ rtos\stm_my_lcd16x2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_e
 rtos\stm_my_lcd16x2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 rtos\stm_my_lcd16x2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 rtos\stm_my_lcd16x2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+rtos\stm_my_lcd16x2.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 rtos\stm_my_lcd16x2.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

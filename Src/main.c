@@ -70,14 +70,42 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void const * argument);
+static void prvOneShotTimerCallback( TimerHandle_t xTimer );
+static void prvAutoReloadTimerCallback( TimerHandle_t xTimer );
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+#ifdef __GNUC__
+  /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
+     set to 'Yes') calls __io_putchar() */
+  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
 
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  * @param  None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE  
+{
+    /* Place your implementation of fputc here */
+    /* e.g. write a character to the USART */
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 100);
+
+
+    return ch;
+}
 /* USER CODE END PFP */
 
-/* USER CODE BEGIN 0 */
+BaseType_t ulCallCount = 0;
 
+/* USER CODE BEGIN 0 */
+/* The periods assigned to the one-shot and auto-reload timers are 3.333 second and half a
+second respectively. */
+#define mainONE_SHOT_TIMER_PERIOD		pdMS_TO_TICKS( 3333 )
+#define mainAUTO_RELOAD_TIMER_PERIOD	pdMS_TO_TICKS( 500 )
 /* USER CODE END 0 */
 
 /**
@@ -88,7 +116,8 @@ void StartDefaultTask(void const * argument);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	TimerHandle_t xAutoReloadTimer, xOneShotTimer;
+	BaseType_t xTimer1Started, xTimer2Started;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -111,41 +140,52 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
+	/* Create the one shot timer, storing the handle to the created timer in xOneShotTimer. */
+	xOneShotTimer = xTimerCreate(
+					/* Text name for the software timer - not used by FreeRTOS. */
+					"OneShot",
+					/* The software timer's period in ticks. */
+					mainONE_SHOT_TIMER_PERIOD,
+					/* Setting uxAutoReload to pdFALSE creates a one-shot software timer. */
+					pdFALSE,
+					/* This exampole does not use the timer id. */
+					0,
+					/* The callback function to be used by the software timer being created. */
+					prvOneShotTimerCallback);
+					
+	/* Create the auto-reload timer, storing the handle to the created timer in xAutoReloadTimer. */
+	xAutoReloadTimer = xTimerCreate(
+					/* Text name for the software timer - not used by FreeRTOS. */
+					"AutoReload",
+					/* The software timer's period in ticks. */
+					mainAUTO_RELOAD_TIMER_PERIOD,
+					/* Setting uxAutoReload to pdTRUE creates an auto-reload timer. */
+					pdTRUE,
+					/* This example does not use the timer id. */
+					0,
+					/* The callback function to be used by the software timer being created. */
+					prvAutoReloadTimerCallback);
+					
+	/* Check the software timers were created. */
+	if( ( xOneShotTimer != NULL ) && (xAutoReloadTimer != NULL) )
+	{
+		/* Start the software timers, using a block time of 0 (no block time). The scheduler has
+		not been started yet so any block time specified here would be ignored anyway. */
+		xTimer1Started = xTimerStart( xOneShotTimer, 0 );
+		xTimer2Started = xTimerStart( xAutoReloadTimer, 0 );
+		
+		/* The implementation of xTimerStart() uses the timer command queue, and xTimerStart()
+		will fail if the timer command queue gets full. The timer service task does not get
+		created until the scheduler is started, so all commands sent to the command queue will
+		stay in the queue until after the scheduler has been started. Check both calls to 
+		xTimerStart() passed. */
+		if( ( xTimer1Started == pdPASS ) && ( xTimer2Started == pdPASS ) )
+		{
+			/* Start the scheduler. */
+			vTaskStartScheduler();
+		}
+	}
  
-
-  /* Start scheduler */
-  osKernelStart();
-  
-  /* We should never get here as control is now taken by the scheduler */
-
-  /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
@@ -157,6 +197,34 @@ int main(void)
   }
   /* USER CODE END 3 */
 
+}
+
+static void prvOneShotTimerCallback( TimerHandle_t xTimer )
+{
+	TickType_t xTimeNow;
+	
+	/* Obtain the current tick count. */
+	xTimeNow = xTaskGetTickCount();
+	
+	/* Output a string to show the time at which the callback was executed. */
+	printf("One-shot timer callback executing %d\r\n", xTimeNow);
+	
+	/* File scope variable. */
+	ulCallCount++;
+}
+
+static void prvAutoReloadTimerCallback( TimerHandle_t xTimer )
+{
+	TickType_t xTimeNow;
+	
+	/* Obtain the current tick count. */
+	xTimeNow = xTaskGetTickCount();
+	
+	/* Output a string to show the time at which the callback was executed. */
+	printf("Auto-reload timer callback executing %d\r\n", xTimeNow);
+	
+	/* File scope variable. */
+	ulCallCount++;
 }
 
 /**

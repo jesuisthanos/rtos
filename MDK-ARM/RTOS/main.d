@@ -1,5 +1,4 @@
 rtos\main.o: ../Src/main.c
-rtos\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 rtos\main.o: ../Inc/main.h
 rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 rtos\main.o: ../Inc/stm32f4xx_hal_conf.h
@@ -28,6 +27,7 @@ rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h
 rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+rtos\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 rtos\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
@@ -43,6 +43,3 @@ rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 rtos\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
-rtos\main.o: ../Inc/STM_MY_LCD16X2.h
-rtos\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-rtos\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
