@@ -59,40 +59,18 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define D0_Pin GPIO_PIN_0
-#define D0_GPIO_Port GPIOA
-#define D1_Pin GPIO_PIN_1
-#define D1_GPIO_Port GPIOA
-#define D2_Pin GPIO_PIN_2
-#define D2_GPIO_Port GPIOA
-#define D3_Pin GPIO_PIN_3
-#define D3_GPIO_Port GPIOA
-#define D4_Pin GPIO_PIN_4
-#define D4_GPIO_Port GPIOA
-#define D5_Pin GPIO_PIN_5
-#define D5_GPIO_Port GPIOA
-#define D6_Pin GPIO_PIN_6
-#define D6_GPIO_Port GPIOA
-#define D7_Pin GPIO_PIN_7
-#define D7_GPIO_Port GPIOA
 #define BUTTON3_Pin GPIO_PIN_13
 #define BUTTON3_GPIO_Port GPIOD
 #define BUTTON2_Pin GPIO_PIN_14
 #define BUTTON2_GPIO_Port GPIOD
 #define BUTTON1_Pin GPIO_PIN_15
 #define BUTTON1_GPIO_Port GPIOD
-#define LED3_Pin GPIO_PIN_6
-#define LED3_GPIO_Port GPIOC
+#define LED1_Pin GPIO_PIN_6
+#define LED1_GPIO_Port GPIOC
 #define LED2_Pin GPIO_PIN_7
 #define LED2_GPIO_Port GPIOC
-#define LED1_Pin GPIO_PIN_8
-#define LED1_GPIO_Port GPIOC
-#define EN_Pin GPIO_PIN_8
-#define EN_GPIO_Port GPIOA
-#define RW_Pin GPIO_PIN_9
-#define RW_GPIO_Port GPIOA
-#define RS_Pin GPIO_PIN_10
-#define RS_GPIO_Port GPIOA
+#define LED3_Pin GPIO_PIN_8
+#define LED3_GPIO_Port GPIOC
 
 /* ########################## Assert Selection ############################## */
 /**
